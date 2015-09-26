@@ -10,8 +10,6 @@
 #include <cstdio>
 #include <unordered_set>
 
-#define	TRY ((size_t)4)
-
 int
 main(void)
 {
