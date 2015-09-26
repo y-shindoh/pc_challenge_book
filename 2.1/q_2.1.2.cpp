@@ -23,15 +23,15 @@ replace(int ground[N][M],
 		size_t j)
 {
 	if (!ground[i][j]) return;
+
 	ground[i][j] = 0;
-	if (0 < i && ground[i-1][j]) replace(ground, i-1, j);
-	if (i+1 < N && ground[i+1][j]) replace(ground, i+1, j);
-	if (0 < j && ground[i][j-1]) replace(ground, i, j-1);
-	if (j+1 < M && ground[i][j+1]) replace(ground, i, j+1);
-	if (0 < i && 0 < j && ground[i-1][j-1]) replace(ground, i-1, j-1);
-	if (0 < i && j+1 < M && ground[i-1][j+1]) replace(ground, i-1, j+1);
-	if (i+1 < N && 0 < j && ground[i+1][j-1]) replace(ground, i+1, j-1);
-	if (i+1 < N && j+1 < M && ground[i+1][j+1]) replace(ground, i+1, j+1);
+
+	for (size_t h = 0 < i ? i - 1 : i; h < i + 2 && h < N; ++h) {
+		for (size_t k = 0 < j ? j - 1 : j; k < j + 2 && k < M; ++k) {
+			if (!ground[h][k]) continue;
+			replace(ground, h , k);
+		}
+	}
 }
 
 int
