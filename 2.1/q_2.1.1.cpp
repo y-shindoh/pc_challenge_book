@@ -12,6 +12,9 @@
 
 #define	WIDTH	((size_t)32)
 
+/**
+ * 深さ優先探索 (DFS) のサンプル実装
+ */
 template<typename TYPE>
 bool
 check(const TYPE* data,
