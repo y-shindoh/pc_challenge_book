@@ -16,10 +16,11 @@ main(void)
 	int n(5);
 	int r(0);
 
-	for (int i(0); i + 2 < n; ++i) {	// 計算量 O(n)
+	// 探索 (計算量 O(n))
+	for (int i(0); i + 2 < n; ++i) {
 		if (a[i] >= a[i+1] + a[i+2]) continue;		// 三角形不成立
-		if (r >= a[i] + a[i+1] + a[i+2]) continue;	// 小さい
 		r = a[i] + a[i+1] + a[i+2];
+		break;	// ソーティング済みのため、探索範囲が限定されている
 	}
 
 	std::printf("%d\n", r);
