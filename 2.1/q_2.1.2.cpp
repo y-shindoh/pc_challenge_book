@@ -8,7 +8,6 @@
 
 #include <cstddef>
 #include <cstdio>
-#include <bitset>
 
 #define	N	((size_t)10)
 #define	M	((size_t)12)
