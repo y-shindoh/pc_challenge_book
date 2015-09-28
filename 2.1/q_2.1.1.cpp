@@ -6,6 +6,11 @@
  * @note	see http://www.amazon.co.jp/2-ebook/dp/B00CY9256C/ .
  */
 
+/*
+  メモ:
+  整数 a[0], ..., a[n] に対し、各整数を足す・足さないで深さ優先探索を行う。
+ */
+
 #include <cstddef>
 #include <cstdio>
 #include <bitset>

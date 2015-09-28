@@ -6,6 +6,14 @@
  * @note	see http://www.amazon.co.jp/2-ebook/dp/B00CY9256C/ .
  */
 
+/*
+  メモ:
+  幅優先探索でSからGまでの経路を見つける。
+  テーブルを用い、各地点のSからの最短距離を保存する。
+  また、同テーブルに未到達の点に特殊な値を埋め込むことで、
+  各地点の到達・未到達を判断できるようにする。
+ */
+
 #include <cstddef>
 #include <cstdio>
 #include <utility>
