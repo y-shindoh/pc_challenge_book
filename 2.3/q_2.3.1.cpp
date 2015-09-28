@@ -21,7 +21,7 @@ int
 main()
 {
 	const int n(4);
-	const int item[][2] = {{2, 3}, {1, 2}, {3, 4}, {2, 2}};
+	const int wv[][2] = {{2, 3}, {1, 2}, {3, 4}, {2, 2}};
 	const int W(5);
 
 	int k;
@@ -33,10 +33,10 @@ main()
 	for (int i(0); i < n; ++i) {
 		for (int j(W-1); 0 <= j; --j) {	// 重複更新を避けるため、後ろから更新
 			if (b[j] < 0) continue;
-			k = j + item[i][0];
+			k = j + wv[i][0];
 			if (W < k) continue;
-			if (b[k] < b[j] + item[i][1]) {
-				b[k] = b[j] + item[i][1];
+			if (b[k] < b[j] + wv[i][1]) {
+				b[k] = b[j] + wv[i][1];
 			}
 		}
 	}
