@@ -135,6 +135,8 @@ namespace ys
 		TYPE
 		size(size_t i)
 			{
+				assert(i < parent_.size());
+
 				i = find(i);
 				return size_[i];
 			}
