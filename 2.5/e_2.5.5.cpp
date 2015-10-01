@@ -14,14 +14,13 @@
 #include <cstddef>
 #include <cstdio>
 #include <climits>
-#include <unordered_set>
 #include <queue>
+#include "union_find_tree.hpp"
 
 #define	V	7	// 頂点数
 #define	E	20	// 辺数
-#define	S	0	// スタートの頂点
 
-typedef	std::pair<int, int>	CV;	// 累計コストと頂点のペア
+typedef	std::pair<int, int>	CV;	// 累計コストと辺のペア
 
 int
 main()
@@ -49,41 +48,24 @@ main()
 					  {6, 5, 9}};	// G->F: 9
 
 	std::priority_queue<CV, std::vector<CV>, std::greater<CV> > queue;
-	std::unordered_set<int> used;
+	ys::UnionFindTree<int> uftree(V);
 
-	used.insert(S);
-	for (int i(0); i < E; ++i) {
-		if (edge[i][0] < S) continue;
-		if (S < edge[i][0]) break;
-		queue.push(CV(edge[i][2], edge[i][1]));
-	}
+	for (int i(0); i < E; ++i) queue.push(CV(edge[i][2], i));
 
 	CV cv;
-	int t;
+	int e;
 	int c(0);
 
 	while (0 < queue.size()) {
 		cv = queue.top();
 		queue.pop();
-		t = cv.second;
-		if (0 < used.count(t)) continue;
-		used.insert(t);
+		e = cv.second;
+		if (uftree.same(edge[e][0], edge[e][1])) continue;
+		uftree.unite(edge[e][0], edge[e][1]);
 		c += cv.first;
-		if (used.size() == V) break;
-		for (int i(0); i < E; ++i) {
-			if (edge[i][0] < t) continue;
-			if (t < edge[i][0]) break;
-			if (0 < used.count(edge[i][1])) continue;
-			queue.push(CV(edge[i][2], edge[i][1]));
-		}
 	}
 
-	if (used.size() == V) {
-		std::printf("FOUND! (%d)\n", c);
-	}
-	else {
-		std::printf("NOT FOUND!\n");
-	}
+	std::printf("FOUND! (%d)\n", c);
 
 	return 0;
 }
