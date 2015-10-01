@@ -14,6 +14,8 @@
 #include <cassert>
 #include <vector>
 
+//#define	__UNION_FIND_TREE_WITH_SIZE__	1
+
 namespace ys
 {
 	/**
@@ -27,6 +29,9 @@ namespace ys
 
 		std::vector<TYPE> parent_;	///< 代表のインデックス
 		std::vector<TYPE> rank_;	///< ランク
+#ifdef	__UNION_FIND_TREE_WITH_SIZE__
+		std::vector<TYPE> size_;	///< グループの大きさ
+#endif	// __UNION_FIND_TREE_WITH_SIZE__
 
 		/**
 		 * グループ代表のインデックスの取得
@@ -57,6 +62,9 @@ namespace ys
 			{
 				parent_.reserve(n);
 				rank_.resize(n, (TYPE)0);
+#ifdef	__UNION_FIND_TREE_WITH_SIZE__
+				size_.resize(n, (TYPE)1);
+#endif	// __UNION_FIND_TREE_WITH_SIZE__
 
 				for (size_t i(0); i < n; ++i) {
 					parent_.push_back((TYPE)i);
@@ -89,10 +97,16 @@ namespace ys
 
 				if (rank_[i] < rank_[j]) {
 					parent_[i] = (TYPE)j;
+#ifdef	__UNION_FIND_TREE_WITH_SIZE__
+					size_[j] += size_[i];
+#endif	// __UNION_FIND_TREE_WITH_SIZE__
 				}
 				else {
 					parent_[j] = (TYPE)i;
 					if (rank_[i] == rank_[j]) rank_[i]++;
+#ifdef	__UNION_FIND_TREE_WITH_SIZE__
+					size_[i] += size_[j];
+#endif	// __UNION_FIND_TREE_WITH_SIZE__
 				}
 			}
 
@@ -111,6 +125,20 @@ namespace ys
 
 				return find(i) == find(j);
 			}
+
+#ifdef	__UNION_FIND_TREE_WITH_SIZE__
+		/**
+		 * グループの大きさを取得
+		 * @param[in]	i	インデックス
+		 * @return	グループの大きさ
+		 */
+		TYPE
+		size(size_t i)
+			{
+				i = find(i);
+				return size_[i];
+			}
+#endif	// __UNION_FIND_TREE_WITH_SIZE__
 	};
 };
 

@@ -11,6 +11,8 @@
   最小全域木問題のクラスカル法。
  */
 
+#define	__UNION_FIND_TREE_WITH_SIZE__	1
+
 #include <cstddef>
 #include <cstdio>
 #include <climits>
@@ -65,7 +67,12 @@ main()
 		c += cv.first;
 	}
 
-	std::printf("FOUND! (%d)\n", c);
+	if (uftree.size(0) == V) {
+		std::printf("FOUND! (%d)\n", c);
+	}
+	else {
+		std::printf("NOT FOUND!\n");
+	}
 
 	return 0;
 }
