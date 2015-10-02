@@ -14,7 +14,7 @@
   具体的には、牛A, ADの最長距離が既に制限されている時に、
   以下のルールで牛B, BDの最長距離が制限される。
 
-  (1) B ≦ A => d[B] ≦ d[A] => d[B] = d[a]
+  (1) B ≦ A => d[B] ≦ d[A] => d[B] = d[A]
   (2) A ≦ B => d[A] ≦ d[B] => d[B] = ∞
   (3) BD ≦ AD & DL => d[BD] ≦ d[AD] => d[BD] = d[AD]
   (4) AD ≦ BD & DL => d[BD] ≦ d[AD] + DL => d[BD] = d[AD] + DL
