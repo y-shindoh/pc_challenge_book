@@ -14,6 +14,7 @@
 #include <cstddef>
 #include <cstdio>
 #include <climits>
+#include <algorithm>
 
 #define	V	7	// 頂点数
 #define	E	20	// 辺数
@@ -45,7 +46,7 @@ main()
 					  {6, 5, 9}};	// G->F: 9
 	int d[V];	// 最小コスト
 
-	for (int i(0); i < V; ++i) d[i] = INT_MAX;
+	std::fill<int*>(d, d+V, INT_MAX);
 	d[S] = 0;
 
 	bool flag(true);

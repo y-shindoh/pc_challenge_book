@@ -17,6 +17,7 @@
 #include <vector>
 #include <queue>
 #include <utility>
+#include <algorithm>
 
 typedef	std::pair<int, int>	CV;	// 累計コストと頂点のペア
 
@@ -54,7 +55,7 @@ main()
 	CV cv;
 	std::priority_queue<CV, std::vector<CV>, std::greater<CV> > queue;
 
-	for (int i(0); i < V; ++i) d[i] = INT_MAX;
+	std::fill<int*>(d, d+V, INT_MAX);
 	queue.push(CV(0, S));
 
 	while (0 < queue.size()) {
