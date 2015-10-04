@@ -23,18 +23,16 @@ main()
 
 	std::vector<size_t> r;
 
-	if (1 < n) {
-		r.push_back(2);
+	if (2 <= n) r.push_back(2);
 
-		for (size_t i(3); i <= n; ++i) {
-			bool f(true);
-			for (auto it = r.begin(); it != r.end() && *it * *it <= i; ++it) {
-				if (0 < i % *it) continue;
-				f = false;
-				break;
-			}
-			if (f) r.push_back(i);
+	for (size_t i(3); i <= n; i += 2) {
+		bool f(true);
+		for (auto it = r.begin(); it != r.end() && *it * *it <= i; ++it) {
+			if (0 < i % *it) continue;
+			f = false;
+			break;
 		}
+		if (f) r.push_back(i);
 	}
 
 	std::printf("%lu => %lu\n", n, r.size());
