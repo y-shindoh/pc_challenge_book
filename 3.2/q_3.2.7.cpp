@@ -52,17 +52,19 @@ main()
 
 	std::vector<WV> wv1;
 	std::vector<WV> wv2;
+	std::vector<WV> wvt;
 
-	fill_wv(w, v, wv1, m);	// O(2^m)
-	fill_wv(w + m, v + m, wv2, n - m);	// O(2^(n-m))
+	fill_wv(w, v, wv1, m);				// O(2^m)
+	fill_wv(w + m, v + m, wvt, n - m);	// O(2^(n-m))
 
-	std::sort(wv2.begin(), wv2.end());	// O((n-m) log (n-m))
+	std::sort(wvt.begin(), wvt.end());	// O(2^(n-m) * (n-m))
 
-	int m_v(0);
-	for (int i(0); i < wv2.size(); ++i) {	// O(n-m)
-		if (wv2[i].second < m_v) wv2[i].second = m_v;
-		else m_v = wv2[i].second;
+	int m_v(-1);
+	for (int i(0); i < wvt.size(); ++i) {	// O(2^(n-m))
+		if (wvt[i].second < m_v) continue;
+		wv2.push_back(wvt[i]);
 	}
+	wvt.clear();
 
 	// O(2^m * (n-m))
 	m_v = 0;
