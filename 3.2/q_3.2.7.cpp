@@ -80,7 +80,7 @@ main()
 			}
 		}
 		if (s < 0) continue;
-		if ((n - m) * (n - m) <= s) continue;
+		if (wv2.size() <= s) continue;
 		if (wv1[i].second + wv2[s].second <= m_v) continue;
 		m_v = wv1[i].second + wv2[s].second;
 	}
