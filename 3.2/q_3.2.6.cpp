@@ -16,9 +16,7 @@
  */
 
 #include <cstdio>
-#include <vector>
 #include <unordered_set>
-#include <algorithm>
 
 int
 main()
@@ -29,22 +27,21 @@ main()
 	const int C[] = {42, 56, -37, -75, -10, -6};
 	const int D[] = {-16, 30, 77, -46, 62, 45};
 
-	std::vector<int> AB;
 	std::unordered_multiset<int> CD;
-	int m(n*n);
-
-	AB.reserve(m);
 
 	for (int i(0); i < n; ++i) {
 		for (int j(0); j < n; ++j) {
-			AB.push_back(A[i] + B[j]);
 			CD.insert(C[i] + D[j]);
 		}
 	}
 
 	int k(0);
 
-	for (int i(0); i < m; ++i) k += CD.count(-1 * AB[i]);
+	for (int i(0); i < n; ++i) {
+		for (int j(0); j < n; ++j) {
+			k += CD.count(-1 * (A[i] + B[j]));
+		}
+	}
 
 	std::printf("%d\n", k);
 
