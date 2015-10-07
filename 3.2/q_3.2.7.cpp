@@ -52,25 +52,25 @@ main()
 
 	std::vector<WV> wv1;
 	std::vector<WV> wv2;
-	std::vector<WV> wvt;
 
 	fill_wv(w, v, wv1, m);				// O(2^m)
-	fill_wv(w + m, v + m, wvt, n - m);	// O(2^(n-m))
+	fill_wv(w + m, v + m, wv2, n - m);	// O(2^(n-m))
 
-	std::sort(wvt.begin(), wvt.end());	// O(2^(n-m) * (n-m))
+	std::sort(wv2.begin(), wv2.end());	// O(2^(n-m) * (n-m))
 
 	int m_v(-1);
-	for (int i(0); i < wvt.size(); ++i) {	// O(2^(n-m))
-		if (wvt[i].second < m_v) continue;
-		wv2.push_back(wvt[i]);
+	int k(0);
+	for (int i(0); i < wv2.size(); ++i) {	// O(2^(n-m))
+		if (wv2[i].second <= m_v) continue;
+		wv2[k++] = wv2[i];
+		m_v = wv2[i].second;
 	}
-	wvt.clear();
 
 	// O(2^m * (n-m))
 	m_v = 0;
 	for (int i(0); i < wv1.size(); ++i) {
-		int s(-1);			// W以下の先頭
-		int e(wv2.size());	// W超の末尾
+		int s(-1);	// W以下の先頭
+		int e(k);	// W超の末尾
 		int j;
 		while (s + 1 < e) {
 			j = (s + e) / 2;
@@ -82,7 +82,7 @@ main()
 			}
 		}
 		if (s < 0) continue;
-		if (wv2.size() <= s) continue;
+		if (k <= s) continue;
 		if (wv1[i].second + wv2[s].second <= m_v) continue;
 		m_v = wv1[i].second + wv2[s].second;
 	}
