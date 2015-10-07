@@ -31,8 +31,9 @@ main()
 
 	std::vector<int> AB;
 	std::unordered_multiset<int> CD;
+	int m(n*n);
 
-	AB.reserve(n*n);
+	AB.reserve(m);
 
 	for (int i(0); i < n; ++i) {
 		for (int j(0); j < n; ++j) {
@@ -42,7 +43,6 @@ main()
 	}
 
 	int k(0);
-	int m(n*n);
 
 	for (int i(0); i < m; ++i) k += CD.count(-1 * AB[i]);
 
