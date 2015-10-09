@@ -79,7 +79,7 @@ main()
 	for (int k(0); k < C; ++k) {
 		a[m+S[k]-1] = A[k];
 		update(x, y, a, S[k]-1, N, m);
-		std::printf("%f, %f (%d)\n", x[1], y[1], a[1]);
+		std::printf("[%d] %f, %f (%d)\n", k, x[1], y[1], a[1]);
 	}
 
 	return 0;
