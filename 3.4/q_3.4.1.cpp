@@ -84,6 +84,29 @@ search2(const int g[5][5],
 	return b[i][s];
 }
 
+// DP
+int
+search3(const int g[5][5],
+		int n,
+		std::vector< std::vector<int> >& b)
+{
+	int k;
+
+	for (int s(1); s < (1 << n); ++s) {
+		for (int i(0); i < n; ++i) {
+			for (int j(0); j < n; ++j) {
+				if (g[j][i] == INT_MAX) continue;
+				k = 1 << j;
+				if (!(s & k)) continue;
+				if (b[j][s & ~k] == INT_MAX) continue;
+				b[i][s] = std::min(b[i][s], b[j][s & ~k] + g[j][i]);
+			}
+		}
+	}
+
+	return b[0][(1 << n) - 1];
+}
+
 int
 main()
 {
@@ -104,6 +127,10 @@ main()
 	for (int i(0); i < n; ++i) std::fill(b[i].begin(), b[i].end(), INT_MAX);
 	b[0][0] = 0;
 	std::printf("%d\n", search2(g, n, b, 0, (1 << n) - 1));
+
+	for (int i(0); i < n; ++i) std::fill(b[i].begin(), b[i].end(), INT_MAX);
+	b[0][0] = 0;
+	std::printf("%d\n", search3(g, n, b));
 
 	return 0;
 }
