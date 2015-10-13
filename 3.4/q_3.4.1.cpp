@@ -53,7 +53,7 @@ search1(const int g[5][5],
 	return b[0][(1 << n) - 1];
 }
 
-// 深さ優先探索 (メモ化)
+// メモ化
 int
 search2(const int g[5][5],
 		int n,
