@@ -58,7 +58,12 @@ main()
 		h = s;
 	}
 
-	std::printf("%f\n", dp[b][h]);
+	if (dp[b][h] != DBL_MAX) {
+		std::printf("%f\n", dp[b][h]);
+	}
+	else {
+		std::printf("到達不能。\n");
+	}
 
 	return 0;
 }
