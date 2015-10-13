@@ -92,14 +92,14 @@ search3(const int g[5][5],
 {
 	int k;
 
-	for (int s(1); s < (1 << n); ++s) {
+	for (int s(0); s < (1 << n); ++s) {
 		for (int i(0); i < n; ++i) {
+			if (b[i][s] == INT_MAX) continue;
 			for (int j(0); j < n; ++j) {
-				if (g[j][i] == INT_MAX) continue;
+				if (g[i][j] == INT_MAX) continue;
 				k = 1 << j;
-				if (!(s & k)) continue;
-				if (b[j][s & ~k] == INT_MAX) continue;
-				b[i][s] = std::min(b[i][s], b[j][s & ~k] + g[j][i]);
+				if (s & k) continue;
+				b[j][s|k] = std::min(b[j][s|k], b[i][s] + g[i][j]);
 			}
 		}
 	}
