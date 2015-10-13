@@ -38,7 +38,7 @@ main()
 	for (int i(0); i < M; ++i) std::fill(dp[i], dp[i] + (1 << N), DBL_MAX);
 	dp[a][0] = 0.0;
 
-	for (int s(0); s < (1 << N); ++s) {
+	for (int s(0); s < (1 << N) - 1; ++s) {
 		for (int i(0); i < M; ++i) {
 			if (dp[i][s] == DBL_MAX) continue;		// パスなし
 			for (int j(0); j < M; ++j) {
