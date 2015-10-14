@@ -9,55 +9,56 @@
 /*
   メモ:
   探索の状態 (到達済みの頂点) をビット表現することを除き、特記事項なし。
-
-  備考:
-  幅優先探索は std::priority_queue を使って、
-  コストの和の小さい順に処理すれば、より効率的に探索できる。
  */
 
 #include <cstdio>
 #include <climits>
+#include <functional>
 #include <vector>
-#include <deque>
+#include <tuple>
+#include <queue>
 #include <algorithm>
 
 // 普通の幅優先探索
+template<int N>
 int
-search1(const int g[5][5],
-		int n,
-		std::vector< std::vector<int> >& b)
+search1(const int g[N][N],
+		int b = 0)
 {
+	typedef	std::tuple<int, int, int>	CNS;	// コスト+位置+状態
 
-	std::deque< std::pair<int, int> > queue;
-	std::pair<int, int> ns;
-	int i, s, t;
+	std::priority_queue<CNS, std::vector<CNS>, std::greater<CNS> > queue;
+	CNS cns;
+	int c, i, s, t;
 
-	queue.push_back(std::pair<int, int>(0, 0));
+	queue.push(CNS(0, b, 0));
 
 	while (0 < queue.size()) {
-		ns = queue.front();
-		queue.pop_front();
-		i = ns.first;
-		s = ns.second;
-		if (s == ((1 << n) - 1)) continue;
-		for (int j(0); j < n; ++j) {
+		cns = queue.top();
+		queue.pop();
+		c = std::get<0>(cns);
+		i = std::get<1>(cns);
+		s = std::get<2>(cns);
+		if (s == ((1 << N) - 1)) {
+			if (i != b) continue;
+			return c;
+		}
+		for (int j(0); j < N; ++j) {
 			if (g[i][j] == INT_MAX) continue;
-			if (s & (1 << j)) continue;
-			t = s | (1 << j);
-			if (b[j][t] <= b[i][s] + g[i][j]) continue;
-			b[j][t] = b[i][s] + g[i][j];
-			queue.push_back(std::pair<int, int>(j, t));
+			t = 1 << j;
+			if (s & t) continue;
+			queue.push(CNS(c + g[i][j], j, s | t));
 		}
 	}
 
-	return b[0][(1 << n) - 1];
+	return INT_MAX;
 }
 
 // メモ化
+template<int N>
 int
-search2(const int g[5][5],
-		int n,
-		std::vector< std::vector<int> >& b,
+search2(const int g[N][N],
+		int b[N][1<<N],
 		int i,
 		int s)
 {
@@ -65,12 +66,12 @@ search2(const int g[5][5],
 		int v(INT_MAX);
 		int k;
 
-		for (int j(0); j < n; ++j) {
+		for (int j(0); j < N; ++j) {
 			k = 1 << j;
 			if (!(s & k)) continue;
 			if (g[j][i] == INT_MAX) continue;				// パス無し
-			if (search2(g, n, b, j, s & ~k) < 0) continue;	// パス無し
-			v = std::min(v, search2(g, n, b, j, s & ~k) + g[j][i]);
+			if (search2<N>(g, b, j, s & ~k) < 0) continue;	// パス無し
+			v = std::min(v, search2<N>(g, b, j, s & ~k) + g[j][i]);
 		}
 
 		if (v == INT_MAX) {
@@ -85,17 +86,17 @@ search2(const int g[5][5],
 }
 
 // DP
+template<int N>
 int
-search3(const int g[5][5],
-		int n,
-		std::vector< std::vector<int> >& b)
+search3(const int g[N][N],
+		int b[N][1<<N])
 {
 	int k;
 
-	for (int s(0); s < (1 << n) - 1; ++s) {
-		for (int i(0); i < n; ++i) {
+	for (int s(0); s < (1 << N) - 1; ++s) {
+		for (int i(0); i < N; ++i) {
 			if (b[i][s] == INT_MAX) continue;
-			for (int j(0); j < n; ++j) {
+			for (int j(0); j < N; ++j) {
 				if (g[i][j] == INT_MAX) continue;
 				k = 1 << j;
 				if (s & k) continue;
@@ -104,33 +105,31 @@ search3(const int g[5][5],
 		}
 	}
 
-	return b[0][(1 << n) - 1];
+	return b[0][(1 << N) - 1];
 }
+
+#define	N	5
 
 int
 main()
 {
-	int n(5);
-	const int g[5][5] = {{INT_MAX, 3, INT_MAX, 4, INT_MAX},
+	const int g[N][N] = {{INT_MAX, 3, INT_MAX, 4, INT_MAX},
 						 {INT_MAX, INT_MAX, 5, INT_MAX, INT_MAX},
 						 {4, INT_MAX, INT_MAX, 5, INT_MAX},
 						 {INT_MAX, INT_MAX, INT_MAX, INT_MAX, 3},
 						 {7, 6, INT_MAX, INT_MAX, INT_MAX}};
+	int b[N][1 << N];
 
-	std::vector< std::vector<int> > b;
 
-	b.resize(n);
-	for (int i(0); i < n; ++i) b[i].resize(1 << n, INT_MAX);
+	std::printf("%d\n", search1<N>(g));
+
+	for (int i(0); i < N; ++i) std::fill(b[i], b[i] + (1 << N), INT_MAX);
 	b[0][0] = 0;
-	std::printf("%d\n", search1(g, n, b));
+	std::printf("%d\n", search2<N>(g, b, 0, (1 << N) - 1));
 
-	for (int i(0); i < n; ++i) std::fill(b[i].begin(), b[i].end(), INT_MAX);
+	for (int i(0); i < N; ++i) std::fill(b[i], b[i] + (1 << N), INT_MAX);
 	b[0][0] = 0;
-	std::printf("%d\n", search2(g, n, b, 0, (1 << n) - 1));
-
-	for (int i(0); i < n; ++i) std::fill(b[i].begin(), b[i].end(), INT_MAX);
-	b[0][0] = 0;
-	std::printf("%d\n", search3(g, n, b));
+	std::printf("%d\n", search3<N>(g, b));
 
 	return 0;
 }
