@@ -63,7 +63,8 @@ main()
 					//dp[n][used] %= M;
 				}
 			}
-			std::swap(c, n);
+			c ^= 1;
+			n ^= 1;
 		}
 	}
 
