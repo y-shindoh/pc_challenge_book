@@ -53,7 +53,7 @@ main()
 			}
 			else {
 				for (int j(0); j < 3; ++j) {
-					tree.unite(d[i][1] + N, d[i][2] + N);
+					tree.unite(d[i][1] + N * j, d[i][2] + N * j);
 				}
 			}
 		}
