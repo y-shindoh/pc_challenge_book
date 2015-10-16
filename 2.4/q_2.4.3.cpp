@@ -22,18 +22,19 @@
 #include <vector>
 #include "union_find_tree.hpp"
 
+#define	N	100
+#define	K	7
+
 int
 main()
 {
-	int N(100);
-	int K(7);
-	int d[][3] = {{1, 101, 1},
-				  {2, 1, 2},
-				  {2, 2, 3},
-				  {2, 3, 3},
-				  {1, 1, 3},
-				  {2, 3, 1},
-				  {1, 5, 5}};
+	int d[K][3] = {{1, 101, 1},
+				   {2, 1, 2},
+				   {2, 2, 3},
+				   {2, 3, 3},
+				   {1, 1, 3},
+				   {2, 3, 1},
+				   {1, 5, 5}};
 
 	std::vector<int> error;
 	ys::UnionFindTree<unsigned int> tree((N + 1) * 3);
