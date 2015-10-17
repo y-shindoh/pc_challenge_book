@@ -12,7 +12,6 @@
  */
 
 #include <cstdio>
-#include <cstring>
 #include <climits>
 #include <vector>
 #include <tuple>
@@ -48,7 +47,7 @@ AddEdge(std::vector< std::vector<Edge> >& graph,
  */
 int
 MaxFlowSubroutine(std::vector< std::vector<Edge> >& graph,
-				  bool* used,
+				  std::vector<bool>& used,
 				  int from,
 				  int to,
 				  int flow = INT_MAX)
@@ -89,18 +88,16 @@ MaxFlow(std::vector< std::vector<Edge> >& graph,
 		int to)
 {
 	int flow = 0;
-	bool* used = new bool[graph.size()];
+	std::vector<bool> used;
+
+	used.resize(graph.size());
 
 	while ('-') {
-		std::memset((void*)used, 0, sizeof(bool) * graph.size());
+		std::fill(used.begin(), used.end(), false);
 		int f = MaxFlowSubroutine(graph, used, from, to);
-		if (f == 0) break;
+		if (f == 0) return flow;
 		flow += f;
 	}
-
-	delete [] used;
-
-	return flow;
 }
 
 #define	V	5
