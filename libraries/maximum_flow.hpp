@@ -90,6 +90,7 @@ namespace ys
 					C_TYPE& c = std::get<1>(graph_[from][i]);	// 空き容量
 					N_TYPE r = std::get<2>(graph_[from][i]);	// 逆辺のインデックス
 
+					if (level_[n] == ~(N_TYPE)0) continue;		// 探索対象外 => スキップ
 					if (level_[n] <= level_[from]) continue;	// 深さの順序が違う => スキップ
 					if (c <= (C_TYPE)0) continue;				// 空き容量なし => スキップ
 
