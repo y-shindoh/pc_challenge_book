@@ -4,7 +4,7 @@ SOURCE	:= $(wildcard *.cpp)
 EXECUTE	:= $(patsubst %.cpp,%.exe,$(SOURCE))
 
 CXX			:= clang++
-CXXFLAGS	:= -Wall -Weffc++ -std=c++11
+CXXFLAGS	:= -Wall -Weffc++ -std=c++11 -I../libraries
 
 %.exe : %.cpp $(wildcard *.hpp)
 	# create: $@
