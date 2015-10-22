@@ -13,9 +13,7 @@
 
 #include <cstddef>
 #include <cstdio>
-#include <bitset>
-
-#define	WIDTH	((size_t)32)
+#include <vector>
 
 /**
  * 深さ優先探索 (DFS) のサンプル実装
@@ -23,20 +21,19 @@
 template<typename TYPE>
 bool
 check(const TYPE* data,
-	  std::bitset<WIDTH>& flags,
-	  const TYPE& value,
+	  std::vector<bool>& flags,	// 事前にfalseで埋めておくこと!
+	  const TYPE value,
 	  size_t length,
 	  size_t index = 0)
 {
-	if (index == 0) flags.reset();
 	if (value == 0) return true;
 	if (length <= index) return false;
 
-	flags.set(index);
+	flags[index] = true;
 	bool result = check<TYPE>(data, flags, value - data[index], length, index + 1);
 	if (result) return true;
 
-	flags.reset(index);
+	flags[index] = false;
 	result = check<TYPE>(data, flags, value, length, index + 1);
 	if (result) return true;
 
@@ -50,7 +47,8 @@ main(void)
 	int a[] = {1, 2, 4, 7};
 	int k(13);
 //	int k(15);
-	std::bitset<WIDTH> flags;
+
+	std::vector<bool> flags(n, false);
 
 	if (check<int>(a, flags, k, n)) {
 		bool flag(false);

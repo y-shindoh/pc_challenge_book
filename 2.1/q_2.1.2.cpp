@@ -18,43 +18,44 @@
 #include <cstddef>
 #include <cstdio>
 
-#define	N	((size_t)10)
-#define	M	((size_t)12)
-
 /**
  * 深さ優先探索のサンプル実装
  * @note	この処理の場合は幅優先探索の方が美しいのでは?
  */
+template<typename TYPE, size_t H, size_t W>
 void
-replace(int ground[N][M],
+replace(TYPE ground[H][W],
 		size_t i,
 		size_t j)
 {
 	if (!ground[i][j]) return;
 
-	ground[i][j] = 0;
+	ground[i][j] = (TYPE)0;
 
-	for (size_t h = 0 < i ? i - 1 : i; h < i + 2 && h < N; ++h) {
-		for (size_t k = 0 < j ? j - 1 : j; k < j + 2 && k < M; ++k) {
+	for (size_t h = 0 < i ? i - 1 : i; h < i + 2 && h < H; ++h) {
+		for (size_t k = 0 < j ? j - 1 : j; k < j + 2 && k < W; ++k) {
 			if (!ground[h][k]) continue;
-			replace(ground, h , k);
+			replace<TYPE, H, W>(ground, h , k);
 		}
 	}
 }
 
+#define	N	((size_t)10)
+#define	M	((size_t)12)
+
 int
 main(void)
 {
-	int ground[N][M] = {{1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0},
-						{0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1},
-						{0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0},
-						{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0},
-						{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0},
-						{0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0},
-						{0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0},
-						{1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0},
-						{0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0},
-						{0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0}};
+	bool ground[N][M] = {{1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0},
+						 {0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1},
+						 {0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0},
+						 {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0},
+						 {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0},
+						 {0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0},
+						 {0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0},
+						 {1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0},
+						 {0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0},
+						 {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0}};
 
 	size_t k(0);
 
@@ -62,7 +63,7 @@ main(void)
 		for (size_t j(0); j < M; ++j) {
 			if (!ground[i][j]) continue;
 			++k;
-			replace(ground, i, j);
+			replace<bool, N, M>(ground, i, j);
 		}
 	}
 
