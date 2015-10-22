@@ -1,7 +1,7 @@
 /* -*- coding: utf-8; tab-width: 4 -*- */
 /**
  * @file	q_2.2.2.cpp
- * @brief	「プログラミングコンテストチャレンジブック」の§2.2の問題の回答
+ * @brief	「プログラミングコンテストチャレンジブック」の§2.2 p.43の問題の回答
  * @author	Yasutaka SHINDOH / 新堂 安孝
  * @note	see http://www.amazon.co.jp/2-ebook/dp/B00CY9256C/ .
  */
@@ -9,34 +9,29 @@
 /*
   メモ:
   スタートから見て、終了が最も早い仕事を選ぶ。
-  次にその終了より後で終了が最も早い仕事を選ぶ。
+  次にその終了より後で開始し終了が最も早い仕事を選ぶ。
   これを繰り返して仕事がなくなるまで探索する。
  */
 
-#include <cstddef>
 #include <cstdio>
 #include <climits>
+
+#define	N	5
 
 int
 main()
 {
-	const int s[] = {1, 2, 4, 6, 8};
-	const int t[] = {3, 5, 7, 9, 10};
-	int n(5);
+	// 入力データは終了時刻&開始時刻の昇順でソート済み (計算量 O(N log N))
+	const int s[N] = {1, 2, 4, 6, 8};
+	const int t[N] = {3, 5, 7, 9, 10};
 
-	int c(0);
-	int x(-1);
-	int y;
+	int j(0);	// 最初の1つめは確定
+	int c(1);
 
-	while ('-') {
-		y = INT_MAX;
-		for (int i(0); i < n; ++i) {
-			if (s[i] <= x) continue;
-			if (t[i] < y) y = t[i];
-		}
-		if (y == INT_MAX) break;
+	for (int i(1); i < N; ++i) {
+		if (s[i] <= t[j]) continue;
+		j = i;
 		++c;
-		x = y;
 	}
 
 	std::printf("%d\n", c);

@@ -1,14 +1,13 @@
 /* -*- coding: utf-8; tab-width: 4 -*- */
 /**
  * @file	q_2.2.1.cpp
- * @brief	「プログラミングコンテストチャレンジブック」の§2.2の問題の回答
+ * @brief	「プログラミングコンテストチャレンジブック」の§2.2 p.42の問題の回答
  * @author	Yasutaka SHINDOH / 新堂 安孝
  * @note	see http://www.amazon.co.jp/2-ebook/dp/B00CY9256C/ .
  */
 
-#include <cstddef>
 #include <cstdio>
-//#include <algorithm>
+#include <algorithm>
 
 /*
   メモ:
@@ -24,35 +23,25 @@ calculate(const int* V,
 	if (0 < N) {
 		const int i = N - 1;
 
-		for (int j(C[i]); 0 <= j; --j) {
-			if (A < V[i] * j) continue;
+		// 2000円札が入力される場合も考慮して、ここではちゃんと探索
+		for (int j = std::min(A / V[i], C[i]); 0 <= j; --j) {
 			if (A == V[i] * j) return j;
-			// 題意に曖昧性があるので、ちゃんと探索する
 			int x = calculate(V, C, i, A - V[i] * j);
 			if (x < 0) continue;
 			return x + j;
 		}
-
-//		int x(0);
-//		int y(0);
-//
-//		for (int i(N-1); 0 <= i; --i) {
-//			int t = std::min<int>((A - x) / V[i], C[i]);
-//			x += t * V[i];
-//			y += t;
-//			if (x == A) return y;
-//		}
 	}
 
 	return -1;
 }
 
+#define	N	6
+
 int
 main()
 {
-	const int V[] = {1, 5, 10, 50, 100, 500};
-	const int C[] = {3, 2, 1, 3, 0, 2};
-	int N(6);
+	const int V[N] = {1, 5, 10, 50, 100, 500};
+	const int C[N] = {3, 2, 1, 3, 0, 2};
 	int A(620);
 
 	int r = calculate(V, C, N, A);

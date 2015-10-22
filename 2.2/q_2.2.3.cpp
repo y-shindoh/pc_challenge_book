@@ -1,7 +1,7 @@
 /* -*- coding: utf-8; tab-width: 4 -*- */
 /**
  * @file	q_2.2.3.cpp
- * @brief	「プログラミングコンテストチャレンジブック」の§2.2の問題の回答
+ * @brief	「プログラミングコンテストチャレンジブック」の§2.2 p.45の問題の回答
  * @author	Yasutaka SHINDOH / 新堂 安孝
  * @note	see http://www.amazon.co.jp/2-ebook/dp/B00CY9256C/ .
  */
@@ -15,7 +15,6 @@
   ※は繰り返す可能性あり。
  */
 
-#include <cstddef>
 #include <cstdio>
 #include <cstring>
 
@@ -33,12 +32,13 @@ int compare(const char* S,
 	return 0;
 }
 
+#define	N	6
+
 int
 main()
 {
-	int N(6);
-	char S[] = "ACDBCB";
-	char T[7];
+	char S[N+1] = "ACDBCB";
+	char T[N+1];
 
 	std::memset((void*)T, 0, sizeof(T));
 	std::printf("S: '%s'\n", S);

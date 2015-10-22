@@ -1,16 +1,19 @@
 /* -*- coding: utf-8; tab-width: 4 -*- */
 /**
  * @file	q_2.2.4.cpp
- * @brief	「プログラミングコンテストチャレンジブック」の§2.2の問題の回答
+ * @brief	「プログラミングコンテストチャレンジブック」の§2.2 p.47の問題の回答
  * @author	Yasutaka SHINDOH / 新堂 安孝
  * @note	see http://www.amazon.co.jp/2-ebook/dp/B00CY9256C/ .
  */
 
 /*
   メモ:
-  最も短い板と次に短い板を見つけ出し、1つのものみなす。
-  これを繰り返すと板が1つになる。
-  この過程を逆にたどれば良い。
+  一番左の点xに注目する。
+  右方向に移動し、xからR以内の最も遠い点yを見つける。
+  点が見つからなかった場合は、xに印をつけて、xの右隣の点に注目を移す。
+  点が見つかった場合は、yに印をつけて、
+  右方向に移動し、yからR以内の最も遠い点zを見つけ、その右隣の点に注目を移す。
+  以上、xが配列末尾を超えるまでこれを繰り返す。
  */
 
 #include <cstddef>
@@ -18,35 +21,34 @@
 #include <vector>
 #include <queue>
 
+#define	N	6
+
 int
 main()
 {
-	int N(3);
-	const int L[] = {8, 5, 8};
+	int R(10);
+	const int X[N] = {1, 7, 15, 20, 30, 50};
 
-	std::priority_queue<int, std::vector<int>, std::greater<int> > min_heap;
-
-	for (int i(0); i < N; ++i) {
-		min_heap.push(L[i]);
-	}
-
-	int x, y, z;
+	int x(0);
+	int y;
+	int z;
 	int c(0);
 
-	// 計算量は O(n log n)。
-	while (1 < min_heap.size()) {
-		x = min_heap.top();
-		min_heap.pop();
-		y = min_heap.top();
-		min_heap.pop();
-		z = x + y;
-		min_heap.push(z);
-
-		c += z;
-		std::printf("%d = %d + %d\n", z, x, y);
+	while (x < N) {
+		++c;
+		y = x;
+		while (y + 1 < N && X[y+1] <= X[x] + R) ++y;
+		if (x == y) {
+			++x;
+		}
+		else {
+			z = y;
+			while (z + 1 < N && X[z+1] <= X[y] + R) ++z;
+			x = z + 1;
+		}
 	}
 
-	std::printf("=> %d\n", c);
+	std::printf("%d\n", c);
 
 	return 0;
 }
