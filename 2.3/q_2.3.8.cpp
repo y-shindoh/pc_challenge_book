@@ -38,6 +38,7 @@ main()
 		for (int i(1); i <= M; ++i) {
 			b[i][j] = b[i-1][j] + b[i][j-1];
 			if (a[j-1] < i) b[i][j] -= b[i-a[j-1]-1][j-1];
+			//b[i][j] %= D;
 		}
 	}
 
