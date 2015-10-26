@@ -13,38 +13,35 @@
   最終的な表の中の最大の価値合計を求めれば良い。
  */
 
-#include <cstddef>
 #include <cstdio>
-#include <vector>
+#include <cstring>
+
+#define	N	3
+#define	W	7
 
 int
 main()
 {
-	const int n(3);
-	const int wv[][2] = {{3, 4}, {4, 5}, {2, 3}};
-	const int W(7);
+	const int wv[N][2] = {{3, 4}, {4, 5}, {2, 3}};
 
 	int k;
-	std::vector<int> b;
+	int b[W+1];
 
-	b.resize(W+1, -1);
-	b[0] = 0;
+	std::memset((void*)b, 0, sizeof(b));
 
-	for (int i(0); i < n; ++i) {
-		for (int j(0); j < W; ++j) {
+	for (int i(0); i < N; ++i) {
+		for (int j(0); j < W; ++j) {	// 各商品の数は無限
 			if (b[j] < 0) continue;
 			k = j + wv[i][0];
-			if (W < k) break;
-			if (b[k] >= b[j] + wv[i][1]) continue;
+			if (W < k) continue;
+			if (b[j] + wv[i][1] <= b[k]) continue;
 			b[k] = b[j] + wv[i][1];
 		}
 	}
 
 	k = 0;
-
 	for (int i(1); i <= W; ++i) {
-		if (b[k] >= b[i]) continue;
-		k = i;
+		if (b[k] < b[i]) k = i;
 	}
 
 	std::printf("%d\n", b[k]);

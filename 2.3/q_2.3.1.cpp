@@ -13,38 +13,35 @@
   最終的な表の中の最大の価値合計を求めれば良い。
  */
 
-#include <cstddef>
 #include <cstdio>
-#include <vector>
+#include <algorithm>
+
+#define	N	4
+#define	W	5
 
 int
 main()
 {
-	const int n(4);
-	const int wv[][2] = {{2, 3}, {1, 2}, {3, 4}, {2, 2}};
-	const int W(5);
-
+	const int wv[N][2] = {{2, 3}, {1, 2}, {3, 4}, {2, 2}};
+	int b[W+1];
 	int k;
-	std::vector<int> b;
 
-	b.resize(W+1, -1);
 	b[0] = 0;
+	std::fill(b + 1, b + W + 1, -1);
 
-	for (int i(0); i < n; ++i) {
-		for (int j(W-1); 0 <= j; --j) {	// 重複更新を避けるため、後ろから更新
+	for (int i(0); i < N; ++i) {
+		for (int j(W-1); 0 <= j; --j) {
 			if (b[j] < 0) continue;
 			k = j + wv[i][0];
 			if (W < k) continue;
-			if (b[k] < b[j] + wv[i][1]) {
-				b[k] = b[j] + wv[i][1];
-			}
+			if (b[j] + wv[i][1] <= b[k]) continue;
+			b[k] = b[j] + wv[i][1];
 		}
 	}
 
 	k = 0;
-
-	for (int i(1); i <= W; ++i) {
-		if (b[k] >= b[i]) continue;
+	for (int i(0); i <= W; ++i) {
+		if (b[i] <= b[k]) continue;
 		k = i;
 	}
 

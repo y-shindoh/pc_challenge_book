@@ -13,46 +13,41 @@
   最終的な表の中の最大の価値合計を求めれば良い。
  */
 
-#include <cstddef>
 #include <cstdio>
 #include <climits>
-#include <vector>
+#include <algorithm>
 
+#define	N	4
+#define	W	5
 #define	MAX_V	100
 
 int
 main()
 {
-	const int n(4);
-	const int wv[][2] = {{2, 3}, {1, 2}, {3, 4}, {2, 2}};
-	const int W(5);
-	const int m = n * MAX_V;
+	const int wv[N][2] = {{2, 3}, {1, 2}, {3, 4}, {2, 2}};
 
 	int h, k;
-	std::vector<int> b;
+	int b[N*MAX_V+1];
+	int l = N * MAX_V;
 
-	b.resize(m + 1, INT_MAX);
 	b[0] = 0;
+	std::fill(b + 1, b + N * MAX_V + 1, W + 1);
 
-	for (int i(0); i < n; ++i) {
-		for (int j(m-1); 0 <= j; --j) {	// 重複更新を避けるため、後ろから更新
-			if (INT_MAX == b[j]) continue;
-			h = b[j] + wv[i][0];
-			if (W < h) continue;
-			k = j + wv[i][1];
-			if (b[k] > h) b[k] = h;
+	for (int i(0); i < N; ++i) {
+		for (int j(l - wv[i][1]); 0 <= j; --j) {
+			if (W < b[j]) continue;
+			h = j + wv[i][1];
+			k = b[j] + wv[i][0];
+			if (b[h] <= k) continue;
+			b[h] = k;
 		}
 	}
 
-	k = 0;
-
-	for (int i(m); 0 <= i; --i) {
-		if (b[i] == INT_MAX) continue;
-		k = i;
+	for (int i(l+1); 0 <= i; --i) {
+		if (W < b[i]) continue;
+		std::printf("%d (%d)\n", i, b[i]);
 		break;
 	}
-
-	std::printf("%d\n", k);
 
 	return 0;
 }

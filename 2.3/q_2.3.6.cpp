@@ -11,43 +11,28 @@
   増加部分列の長さに対するその時点での整数の最小値の表を作り、
   数列を1つずつ進めて表を更新する。
   最終的に表で最小値が更新された最も末尾寄りの値が回答になる。
-
-  備考:
-  表の更新は、二分探索で実装したほうが速い。
  */
 
-#include <cstddef>
 #include <cstdio>
 #include <climits>
-#include <vector>
+#include <algorithm>
+
+#define	N	5
 
 int
 main()
 {
-	int n(5);
-	const int a[] = {4, 2, 3, 1, 5};
+	const int a[N] = {4, 2, 3, 1, 5};
 
-	std::vector<int> b;
-	int k(0);
+	int b[N];
 
-	b.resize(n+1, INT_MAX);
-	b[0] = INT_MIN;
+	std::fill(b, b + N, INT_MAX);
 
-	for (int i(0); i < n; ++i) {
-		for (int j(k); 0 <= j; --j) {
-			if (b[j] > a[i]) continue;
-			if (b[j+1] <= a[i]) continue;
-			if (k + 1 < n && k <= j) k = j + 1;
-			b[j+1] = a[i];
-			break;	// これより短い箇所は見なくて良い
-		}
+	for (int i(0); i < N; ++i) {
+		*std::upper_bound(b, b + N, a[i]) = a[i];
 	}
 
-	for (int i(n); 0 < i; --i) {
-		if (b[i] == INT_MAX) continue;
-		std::printf("%d\n", i);
-		break;
-	}
+	std::printf("%lu\n", std::lower_bound(b, b + N, INT_MAX) - b);
 
 	return 0;
 }

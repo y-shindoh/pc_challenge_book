@@ -8,8 +8,8 @@
 
 /*
   メモ:
-  1つめの文字列のi番目、2つ目の文字列のj番目までに関する
-  最長一致部分文字列の長さを算出して保持するテーブルを作り、
+  1つめの文字列のi番目、2つ目の文字列のj番目までを使った場合の
+  最長一致部分文字列長を算出して保持するテーブルを作り、
   テーブルの右下を参照する。
  */
 
@@ -18,25 +18,23 @@
 #include <cstring>
 #include <vector>
 
+#define	N	4
+#define	M	4
+
 int
 main()
 {
-	int n(4);
-	const char s[] = "abcd";
+	const char s[N+1] = "abcd";
+	const char t[M+1] = "becd";
 
-	int m(4);
-	const char t[] = "becd";
+	int b[N][M];
 
-	int** b;
-
-	b = new int*[n];
-	for (int i(0); i < n; ++i) {
-		b[i] = new int[m];
-		std::memset((void*)b[i], 0, sizeof(int) * m);
+	for (int i(0); i < N; ++i) {
+		std::memset((void*)b[i], 0, sizeof(int) * (size_t)M);
 	}
 
-	for (int i(0); i < n; ++i) {
-		for (int j(0); j < m; ++j) {
+	for (int i(0); i < N; ++i) {
+		for (int j(0); j < M; ++j) {
 			// 文字の一致状況は関係ない
 			if (0 < i && b[i][j] < b[i-1][j]) b[i][j] = b[i-1][j];
 			if (0 < j && b[i][j] < b[i][j-1]) b[i][j] = b[i][j-1];
@@ -46,19 +44,13 @@ main()
 					if (b[i][j] < b[i-1][j-1] + 1) b[i][j] = b[i-1][j-1] + 1;
 				}
 				else {
-					if (b[i][j] < 1) b[i][j] = 1;
+					b[i][j] = 1;
 				}
 			}
 		}
 	}
 
-	std::printf("%d\n", b[n-1][m-1]);
-
-	for (int i(0); i < n; ++i) {
-		delete [] b[i];
-	}
-	delete [] b;
-
+	std::printf("%d\n", b[N-1][M-1]);
 
 	return 0;
 }

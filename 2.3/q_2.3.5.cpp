@@ -15,43 +15,46 @@
   備考:
   自力では計算量の爆発しやすい解法しか思いつかなかったため、
   書籍のヒント (DPテーブルの使い方) を少し読んで書籍とは違うコードを実装した。
-  計算量は O(nK) で、書籍と変わらない。
+  計算量は O(NK) で、書籍と変わらない。
+  ※「bool値を求めるDPをすることは無駄であることが多く」は良いアドバイス。
  */
 
-#include <cstddef>
 #include <cstdio>
 #include <climits>
-#include <vector>
+#include <algorithm>
+
+#define	N	3
+#define	K	17
 
 int
 main()
 {
-	const int n(3);
-	const int a[] = {3, 5, 8};
-	const int m[] = {3, 2, 2};
-	const int K(17);
+	const int a[N] = {3, 5, 8};
+	const int m[N] = {3, 2, 2};
 
-	std::vector<int> b;
+	int h, k;
+	int b[K+1];
 
-	b.resize(K+1, INT_MAX);
 	b[0] = 0;
+	std::fill(b + 1, b + K + 1, INT_MAX);
 
-	for (int i(0); i < n; ++i) {
+	for (int i(0); i < N; ++i) {
 		if (0 < i) {
-			for (int j(0); j < K; ++j) {
-				if (b[j] == INT_MAX) continue;
-				b[j] = 0;		// 整数の使用回数をリセット
-			}
+			std::replace_if(b, b + K,
+							[] (int x) { return x != INT_MAX; },
+							0);	// 整数の使用回数をリセット
 		}
+
 		for (int j(0); j < K; ++j) {
 			if (b[j] == INT_MAX) continue;
 			if (m[i] <= b[j]) continue;
-			int k = j + a[i];	// 合計値
+			k = j + a[i];		// 合計値
 			if (K < k) break;
-			int h = b[j] + 1;	// 整数の使用回数
+			h = b[j] + 1;		// 整数の使用回数
 			if (b[k] <= h) continue;
 			b[k] = h;			// 整数の使用回数を更新
 		}
+
 		if (b[K] != INT_MAX) break;
 	}
 
