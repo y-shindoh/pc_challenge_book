@@ -11,7 +11,6 @@
   単一始点最短経路問題のベルマンフォード法の実装。
  */
 
-#include <cstddef>
 #include <cstdio>
 #include <climits>
 #include <algorithm>
@@ -46,13 +45,13 @@ main()
 					  {6, 5, 9}};	// G->F: 9
 	int d[V];	// 最小コスト
 
-	std::fill<int*>(d, d+V, INT_MAX);
+	std::fill(d, d+V, INT_MAX);
 	d[S] = 0;
 
 	bool flag(true);
 	int s, g, c;
 
-	while (flag) {
+	for (int h(0); flag && h < V; ++h) {
 		flag = false;
 		for (int i(0); i < E; ++i) {
 			s = edge[i][0];
@@ -65,16 +64,18 @@ main()
 		}
 	}
 
-	for (int i(0); i < V; ++i) {
-		if (0 < i) std::printf(", ");
-		if (d[i] != INT_MAX) {
-			std::printf("%d", d[i]);
+	if (!flag) {	// 更新が続いていた場合はスキップ
+		for (int i(0); i < V; ++i) {
+			if (0 < i) std::printf(", ");
+			if (d[i] != INT_MAX) {
+				std::printf("%d", d[i]);
+			}
+			else {
+				std::printf("-");
+			}
 		}
-		else {
-			std::printf("-");
-		}
+		std::printf("\n");
 	}
-	std::printf("\n");
 
 	return 0;
 }

@@ -31,9 +31,9 @@ search(const char t[N][N],
 	for (char h(0); h < C; ++h) {
 		flag = true;
 		for (int j(0); j < i; ++j) {
-			if (!t[j][i]) continue;
+			if (!t[i][j]) continue;
 			if (b[j] != h) continue;
-			flag = false;
+			flag = false;	// 隣接しているノードが同じ色
 			break;
 		}
 		if (!flag) continue;

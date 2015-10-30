@@ -11,7 +11,6 @@
   単一始点最短経路問題のダイクストラ法の実装。
  */
 
-#include <cstddef>
 #include <cstdio>
 #include <climits>
 #include <vector>
@@ -55,7 +54,7 @@ main()
 	CV cv;
 	std::priority_queue<CV, std::vector<CV>, std::greater<CV> > queue;
 
-	std::fill<int*>(d, d+V, INT_MAX);
+	std::fill(d, d+V, INT_MAX);
 	queue.push(CV(0, S));
 
 	while (0 < queue.size()) {

@@ -11,9 +11,9 @@
   単一始点最短経路問題のワーシャル-フロイド法の実装。
  */
 
-#include <cstddef>
 #include <cstdio>
 #include <climits>
+#include <algorithm>
 
 #define	V	7	// 頂点数
 #define	E	20	// 辺数
@@ -43,20 +43,20 @@ main()
 					  {5, 6, 9},	// F->G: 9
 					  {6, 4, 5},	// G->E: 5
 					  {6, 5, 9}};	// G->F: 9
-	int d[V][V];	// 各頂点の最小累計コスト
+	int d[V][V];	// 各頂点間の最小累計コスト
 
 	int k(0);
 
 	for (int i(0); i < V; ++i) {
+		d[i][i] = 0;
+		std::fill(d[i] + 1, d[i] + V, INT_MAX);
 		while (k < E && edge[k][0] < i) ++k;
 		if (E <= k || edge[k][0] != i) continue;
 		for (int j(0); j < V; ++j) {
-			d[i][j] = INT_MAX;
 			while (k < E && edge[k][0] == i && edge[k][1] < j) ++k;
 			if (E <= k || edge[k][0] != i || edge[k][1] != j) continue;
 			d[i][j] = edge[k][2];
 		}
-		d[i][i] = 0;
 	}
 
 	for (int k(0); k < V; ++k) {
