@@ -9,7 +9,7 @@
 /*
   メモ:
   初期状態に対し、到達できるガソリン・スタンドをリスト・アップする。
-  初期状態でゴールまで到達するならそこで終了。(※)
+  この状態でゴールまで到達するならそこで終了。(※)
   ゴールに到達できない場合、
   到達できるガソリン・スタンドのうち給油量が最大のものに寄ったと仮定し、
   到達できる距離を増やす。
@@ -19,36 +19,35 @@
   途中、リストが空になった場合はゴールに到着できないと考える。
  */
 
-#include <cstddef>
 #include <cstdio>
 #include <queue>
+
+#define	N	4
+#define	L	25
+#define	P	10
 
 int
 main()
 {
-	int N(4);
-	int L(25);
-	int P(10);
-	const int A[] = {10, 14, 20, 21};
-	const int B[] = {10, 5, 2, 4};
+	const int A[N] = {10, 14, 20, 21};
+	const int B[N] = {10, 5, 2, 4};
 
-	std::priority_queue<int> queue;	// 給油量のリスト
-	int k(0);	// 最後に到達したガソリン・スタンド
-	int r(0);	// 給油回数
+	std::priority_queue<int> queue;	// 到着済みガソリンスタンドの給油量
+	int l(0);	// 移動可能距離
+	int h(0);	// 最左の未到着ガソリンスタンド
+	int r(0);	// 給油必要回数
 
-	while (P < L) {
-		for (int i(k); i < N; ++i) {
-			if (P < A[i]) break;
-			queue.push(B[i]);
-			k = i;
-		}
-		if (queue.empty()) return -1;
-		P += queue.top();
+	queue.push(P);
+
+	while (0 < queue.size()) {
+		l += queue.top();
 		queue.pop();
+		if (L <= l) break;	// 到達
 		++r;
+		while (h < N && A[h] <= l) queue.push(B[h++]);
 	}
 
-	std::printf("%d\n", r);
+	if (L <= l) std::printf("%d\n", r);
 
 	return 0;
 }

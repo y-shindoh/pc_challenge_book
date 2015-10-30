@@ -17,7 +17,6 @@
   (もっとも、それもすぐにはピンとこなかったのだが)
  */
 
-#include <cstddef>
 #include <cstdio>
 #include <vector>
 #include "union_find_tree.hpp"
@@ -37,7 +36,7 @@ main()
 				   {1, 5, 5}};
 
 	std::vector<int> error;
-	ys::UnionFindTree<unsigned int> tree((N + 1) * 3);
+	ys::UnionFindTree<unsigned int> tree((N + 1) * 3);	// インデックスは1始まり
 
 	for (int i(0); i < K; ++i) {
 		// 入力チェック
@@ -49,8 +48,7 @@ main()
 		if (d[i][0] == 1) {
 			// 情報1 (同じ種類)
 			if (tree.same(d[i][1], d[i][2] + N) || tree.same(d[i][1], d[i][2] + N * 2)) {
-				error.push_back(i);	// 異なる種類の関係が成立
-				continue;
+				error.push_back(i);	// 異なる種類の関係 (A&B か A&C) が成立
 			}
 			else {
 				for (int j(0); j < 3; ++j) {
@@ -61,8 +59,7 @@ main()
 		else {
 			// 情報2 (食物連鎖)
 			if (tree.same(d[i][1], d[i][2]) || tree.same(d[i][1], d[i][2] + N * 2)) {
-				error.push_back(i);	// 連鎖しない関係が成立
-				continue;
+				error.push_back(i);	// 連鎖しない関係 (A&A か A&C) が成立
 			}
 			else {
 				for (int j(0); j < 3; ++j) {
