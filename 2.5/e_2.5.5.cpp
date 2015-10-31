@@ -22,7 +22,7 @@
 #define	V	7	// 頂点数
 #define	E	20	// 辺数
 
-typedef	std::pair<int, int>	CV;	// 累計コストと辺のペア
+typedef	std::pair<int, int>	CV;	// コストと辺のペア
 
 int
 main()
