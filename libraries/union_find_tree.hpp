@@ -13,6 +13,7 @@
 #include <cstddef>
 #include <cassert>
 #include <vector>
+#include <utility>
 
 //#define	__UNION_FIND_TREE_WITH_SIZE__	1
 
@@ -59,15 +60,14 @@ namespace ys
 		 * コンストラクタ
 		 */
 		UnionFindTree(size_t n)
-			{
-				parent_.reserve(n);
-				rank_.resize(n, (TYPE)0);
 #ifdef	__UNION_FIND_TREE_WITH_SIZE__
-				size_.resize(n, (TYPE)1);
+			: parent_(n), rank_(n, (TYPE)0), size_(n, (TYPE)1)
+#else	// __UNION_FIND_TREE_WITH_SIZE__
+			: parent_(n), rank_(n, (TYPE)0)
 #endif	// __UNION_FIND_TREE_WITH_SIZE__
-
+			{
 				for (size_t i(0); i < n; ++i) {
-					parent_.push_back((TYPE)i);
+					parent_[i] = (TYPE)i;
 				}
 			}
 
@@ -95,19 +95,12 @@ namespace ys
 				j = find(j);
 				if (i == j) return;
 
-				if (rank_[i] < rank_[j]) {
-					parent_[i] = (TYPE)j;
+				if (rank_[i] < rank_[j]) std::swap<size_t>(i, j);
+				parent_[j] = (TYPE)i;
+				if (rank_[i] == rank_[j]) rank_[i]++;
 #ifdef	__UNION_FIND_TREE_WITH_SIZE__
-					size_[j] += size_[i];
+				size_[i] += size_[j];
 #endif	// __UNION_FIND_TREE_WITH_SIZE__
-				}
-				else {
-					parent_[j] = (TYPE)i;
-					if (rank_[i] == rank_[j]) rank_[i]++;
-#ifdef	__UNION_FIND_TREE_WITH_SIZE__
-					size_[i] += size_[j];
-#endif	// __UNION_FIND_TREE_WITH_SIZE__
-				}
 			}
 
 		/**
