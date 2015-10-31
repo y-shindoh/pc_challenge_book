@@ -21,7 +21,7 @@
 #define	E	20	// 辺数
 #define	S	0	// スタートの頂点
 
-typedef	std::pair<int, int>	CV;	// 累計コストと頂点のペア
+typedef	std::pair<int, int>	CV;	// コストと頂点のペア
 
 int
 main()
