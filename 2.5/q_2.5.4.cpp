@@ -29,7 +29,6 @@
   (が、それだけでは理解できなかったので、けっきょく自分で考えた)
  */
 
-#include <cstddef>
 #include <cstdio>
 #include <climits>
 #include <algorithm>
@@ -50,7 +49,7 @@ main()
 	int d[V];	// 0からの最長距離
 
 	d[0] = 0;
-	std::fill<int*>(d+1, d+V, INT_MAX);
+	std::fill(d+1, d+V, INT_MAX);
 
 	bool flag(true);
 	int s, g, c;
