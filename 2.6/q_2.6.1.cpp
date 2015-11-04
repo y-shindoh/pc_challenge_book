@@ -10,6 +10,7 @@
   メモ:
   2点間を長辺とした三角形の、他辺の最大公倍数を求めれば良い。
   (ユークリッドの互除法を用いれば少ない計算量で求まる)
+  「最大公倍数 - 1」が答えになる。
 
   備考:
   もう少し計算量の多い手法を考えてしまった。
@@ -48,7 +49,7 @@ main()
 	int y = std::max<int>(P1[1], P2[1]) - std::min<int>(P1[1], P2[1]);
 	unsigned int d = gcd<unsigned int>(x, y);
 
-	std::printf("%u\n", d);
+	std::printf("%u\n", d - 1);
 
 	return 0;
 }
