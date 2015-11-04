@@ -54,7 +54,8 @@ main()
 	bool flag(true);
 	int s, g, c;
 
-	while (flag) {
+	// ベルマンフォード法で単一視点最短路問題として解く
+	for (int h(0); flag && h < V; ++h) {
 		flag = false;
 		for (int i(0); i < E; ++i) {
 			s = edge[i][0];
@@ -79,7 +80,7 @@ main()
 	std::printf("\n");
 
 	for (int i(1); i < V; ++i) {
-		if (0 <= d[i-1] && d[i-1] <= d[i]) continue;
+		if (0 <= d[i-1] && d[i-1] <= d[i]) continue;	// 本当はDL, DDの条件も見るべき
 		d[V-1] = -1;	// 最初の並びが適さない
 		break;
 	}
