@@ -13,18 +13,18 @@
 
 #include <cstdio>
 
+//#define	N	53
+#define	N	295927
+
 int
 main()
 {
-//	int n(53);
-	int n(295927);
-
-	if (0 < n) {	// 自然数を仮定
+	if (0 < N) {	// 自然数を仮定
 		int r(1);
 
-		if (0 < n % 2) {
-			for (int i(3); i * i <= n; i += 2) {
-				if (0 < n % i) continue;
+		if (0 < N % 2) {
+			for (int i(3); i * i <= N; i += 2) {
+				if (0 < N % i) continue;
 				r = i;
 				break;
 			}
@@ -37,7 +37,7 @@ main()
 			std::printf("YES\n");
 		}
 		else {
-			std::printf("NO (%d = %d x %d)\n", n, r, n / r);
+			std::printf("NO (%d = %d x %d)\n", N, r, N / r);
 		}
 	}
 
