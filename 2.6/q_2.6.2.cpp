@@ -9,14 +9,57 @@
 /*
   メモ:
 
+  備考:
+  再帰の説明で少し理解が進んだが、まだ甘い。
  */
 
 #include <cstdio>
 
 int
+extgcd(int a,
+	   int b,
+	   int& x,
+	   int& y)
+{
+	int d(a);
+
+	if (b != 0) {
+		d = extgcd(b, a % b, y, x);
+		y -= (a / b) * x;
+	}
+	else {
+		x = 1;
+		y = 0;
+	}
+
+	return d;
+}
+
+#define	A	4
+#define	B	11
+
+int
 main()
 {
-	std::printf("後回し。\n");
+	int x(0);
+	int y(0);
+	int d = extgcd(A, B, x, y);
+
+	if (d == 1) {
+		if (0 <= x) {
+			std::printf("%d * %d + ", A, x);
+		}
+		else {
+			std::printf("%d * (%d) + ", A, x);
+		}
+
+		if (0 <= y) {
+			std::printf("%d * %d = 1\n", B, y);
+		}
+		else {
+			std::printf("%d * (%d) = 1\n", B, y);
+		}
+	}
 
 	return 0;
 }
