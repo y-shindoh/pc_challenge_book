@@ -12,29 +12,33 @@
  */
 
 #include <cstdio>
+#include <algorithm>
+
+#define	N	5
+#define	K	3
 
 int
 main()
 {
-	int n(5);
-	const int a[] = {2, 3, 3, 5, 6};
-	int k(3);
+	const int a[N] = {2, 3, 3, 5, 6};
 
-	int s(-1);	// k未満の末尾
-	int e(n);	// k以上の先頭
+	int s(-1);	// K未満の先頭 (先頭に INT_MIN を仮想的に追加したイメージ)
+	int e(N);	// K以上の末尾 (末尾に INT_MAX を仮想的に追加したイメージ)
 	int i;
 
 	while (s + 1 < e) {
 		i = (s + e) / 2;
-		if (k <= a[i]) {
-			e = i;
-		}
-		else if (a[i] < k) {
+
+		if (a[i] < K) {
 			s = i;
+		}
+		else {
+			e = i;
 		}
 	}
 
-	std::printf("%d\n", e);
+	std::printf("%d ", e);
+	std::printf("(%lu)\n", (size_t)(std::lower_bound(a, a + N, K) - a));
 
 	return 0;
 }
