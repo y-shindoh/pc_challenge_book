@@ -40,7 +40,7 @@ main()
 		else s = t;
 	}
 
-	std::printf("%.2f\n", std::floor(s * 100.0) / 100.0);
+	std::printf("%.2f (%f)\n", std::floor(s * 100.0) / 100.0, s);
 
 	return 0;
 }
