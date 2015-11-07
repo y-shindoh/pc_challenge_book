@@ -28,21 +28,24 @@ main()
 	size_t b(22801787297);
 
 	std::vector<size_t> r1, r2;
+	bool f;
 
-	if (4 <= b) r1.push_back(2);
+	if (4 <= b) {
+		r1.push_back(2);
 
-	for (size_t i(3); i * i < b; i += 2) {
-		bool f(true);
-		for (auto it = r1.begin(); it != r1.end() && *it * *it <= i; ++it) {
-			if (0 < i % *it) continue;
-			f = false;
-			break;
+		for (size_t i(3); i * i < b; i += 2) {
+			f = true;
+			for (auto it = r1.begin(); it != r1.end() && *it * *it <= i; ++it) {
+				if (0 < i % *it) continue;
+				f = false;
+				break;
+			}
+			if (f) r1.push_back(i);;
 		}
-		if (f) r1.push_back(i);;
 	}
 
 	for (size_t i(0 < a % 2 ? a : a + 1); i < b; i += 2) {
-		bool f(true);
+		f = true;
 		for (auto it = r1.begin(); it != r1.end() && *it * *it <= i; ++it) {
 			if (0 < i % *it) continue;
 			f = false;
