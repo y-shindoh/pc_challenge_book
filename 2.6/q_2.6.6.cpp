@@ -23,7 +23,7 @@ template<typename TYPE>
 TYPE
 power_number(TYPE base,
 			 TYPE exponet,
-			 TYPE divisor = 0)
+			 TYPE divisor = (TYPE)0)
 {
 	TYPE r(1);
 
@@ -31,7 +31,7 @@ power_number(TYPE base,
 
 	for (TYPE i(0); 0 < exponet; ++i) {
 		if (exponet & ((TYPE)1 << i)) {
-			r *= base;
+			r *= base;	// オリジナルの base の 2^i をかける
 			if (0 < divisor) r %= divisor;
 			exponet &= ~((TYPE)1 << i);
 		}
@@ -42,7 +42,23 @@ power_number(TYPE base,
 	return r;
 }
 
-typedef unsigned long long ull;
+template<typename TYPE>
+bool
+is_prime(TYPE number)
+{
+	if (number <= (TYPE)1) return false;
+	if (number == (TYPE)2) return true;
+	if (number % (TYPE)2 == 0) return false;
+
+	for (TYPE i(3); i * i <= number; i += (TYPE)2) {
+		if (0 < number % i) continue;
+		return false;
+	}
+
+	return true;
+}
+
+typedef	unsigned long long	ull;
 
 int
 main()
@@ -54,8 +70,15 @@ main()
 
 	for (ull x(2); x < n; ++x) {
 		y = power_number<ull>(x, n);	// 可読性のため桁あふれ対策なし
+
 		if (x % n == y % n) {
-			std::printf("YES (n = %llu, x = %llu, x^n = %llu)\n", n, x, y);
+			if (is_prime<ull>(x)) {
+				std::printf("No (n = %llu, x = %llu, x^n = %llu)\n", n, x, y);
+			}
+			else {
+				std::printf("YES (n = %llu, x = %llu, x^n = %llu)\n", n, x, y);
+			}
+
 			return 0;
 		}
 	}
