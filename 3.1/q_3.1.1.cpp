@@ -29,12 +29,8 @@ main()
 	while (s + 1 < e) {
 		i = (s + e) / 2;
 
-		if (a[i] < K) {
-			s = i;
-		}
-		else {
-			e = i;
-		}
+		if (a[i] < K) s = i;
+		else e = i;
 	}
 
 	std::printf("%d ", e);
