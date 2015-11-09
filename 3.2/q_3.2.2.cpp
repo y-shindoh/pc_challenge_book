@@ -12,36 +12,35 @@
  */
 
 #include <cstdio>
-#include <cstring>
+#include <algorithm>
+
+#define	P	5
+#define	N	2	// ページの種類 (計算量は O(n))
 
 int
 main()
 {
-	int P(5);
-	int n(2);	// ページの種類 (計算量は O(n))
 	const int a[] = {0, 1, 1, 1, 0};	// ID付け替え済み (計算量は O(n))
 
-	int b[16];
-	int w(n+1);
-	int k(0);
-	int s(0);
-	int e(1);
+	int b[N];	// ページの種類ごとの区間内出現数
+	int w(N+1);	// 区間のページ数 (最小値)
+	int k(0);	// 区間内のページの種類数
+	int s(0);	// 区間の先頭
+	int e(0);	// 区間の末尾+1
 
-	std::memset((void*)b, 0, sizeof(b));
-	++b[a[0]];
-	++k;
+	std::fill(b, b + N, 0);
 
 	while (s < P) {
-		while (k < n && e < P) {
+		while (k < N && e < P) {
 			if (b[a[e]] == 0) ++k;
 			++b[a[e++]];
 		}
-		if (n <= k && e - s < w) w = e - s;
+		if (N <= k && e - s < w) w = e - s;
 		if (b[a[s]] == 1) --k;
 		--b[a[s++]];
 	}
 
-	if (w <= n) {
+	if (w <= N) {
 		std::printf("Yes (%d)\n", w);
 	}
 	else {
