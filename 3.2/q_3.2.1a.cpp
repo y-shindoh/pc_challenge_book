@@ -13,37 +13,39 @@
 
 #include <cstdio>
 
+#define	N	10
+#define	S	15
+//#define	N	5
+//#define	S	11
+
 int
 main()
 {
-	int n(10);
-	int S(15);
-	const int a[] = {5, 1, 3, 5, 10, 7, 4, 9, 2, 8};
+	const int a[N] = {5, 1, 3, 5, 10, 7, 4, 9, 2, 8};
+//	const int a[N] = {1, 2, 3, 4, 5};
 
-//	int n(5);
-//	int S(11);
-//	const int a[] = {1, 2, 3, 4, 5};
+	int b[N+1];
 
-	int b[16];
+	b[0] = 0;
+	for (int i(1); i < N+1; ++i) b[i] = b[i-1] + a[i-1];
 
-	b[0] = a[0];
-	for (int i(1); i < n; ++i) b[i] = b[i-1] + a[i];
+	int h(N+1);
 
-	int h(n+1);
-
-	for (int i(0); i < n; ++i) {
+	for (int i(0); i < N; ++i) {
 		int s(i);	// S未満の先頭
-		int e(n);	// S以上の末尾
+		int e(N+1);	// S以上の末尾
 		while (s + 1 < e) {
 			int j = (s + e) / 2;
 			if (S <= b[j] - b[i]) e = j;
 			else s = j;
 		}
-		if (e == n) continue;
-		if (e - i < h) h = e - i;
+		if (e == N + 1) break;		// S以上の和が見つからなかった
+		if (b[e] - b[i] < S) break;	// S以上の和が見つからなかった (本来は不要)
+		if (h <= e - i) continue;	// 以前見つけた和の部分列の長さ以上
+		h = e - i;
 	}
 
-	if (h <= n) {
+	if (h <= N) {
 		std::printf("Yes (%d)\n", h);
 	}
 	else {
