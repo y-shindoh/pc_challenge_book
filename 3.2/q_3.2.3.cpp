@@ -18,7 +18,7 @@
  */
 
 #include <cstdio>
-#include <cstring>
+#include <algorithm>
 
 // O(n^3) 版
 int
@@ -27,8 +27,9 @@ calc(const char* a,
 	 int N,
 	 int K)
 {
-	std::memset((void*)b, 0, sizeof(int) * N);
-	int k(0);
+	int k(0);	// 回転の総数
+
+	std::fill(b, b + N, 0);
 
 	for (int i(0); i + K <= N; ++i) {
 		if (a[i] == 'F') {
@@ -60,26 +61,29 @@ calc(const char* a,
 	 int N,
 	 int K)
 {
-	std::memset((void*)b, 0, sizeof(bool) * N);
-	int t(0);
-	int k(0);
+	int t(0);	// 注目しているインデックスで影響している回転の回数
+	int k(0);	// 回転の総数
 
+	std::fill(b, b + N, false);
+
+	// 回転させて調整
 	for (int i(0); i + K <= N; ++i) {
 		if (a[i] == 'F') {
 			if (t % 2 == 1) {
-				b[i] = true;
+				b[i] = true;	// ここで回転させた
 				++t, ++k;
 			}
 		}
 		else {
 			if (t % 2 == 0) {
-				b[i] = true;
+				b[i] = true;	// ここで回転させた
 				++t, ++k;
 			}
 		}
 		if (K - 1 <= i && b[i-K+1]) --t;
 	}
 
+	// 回転できない末尾部分のチェック
 	for (int i(N-K+1); i < N; ++i) {
 		if (a[i] == 'F') {
 			if (t % 2 == 1) return -1;
@@ -93,13 +97,14 @@ calc(const char* a,
 	return k;
 }
 
+#define	N	7
+
 int
 main()
 {
-	int N(7);
-	const char a[] = "BBFBFBB";
-//	int b[16];
-	bool b[16];
+	const char a[N+1] = "BBFBFBB";
+//	int b[N];
+	bool b[N];
 
 	for (int k(N); 0 < k; --k) {
 		int m = calc(a, b, N, k);
