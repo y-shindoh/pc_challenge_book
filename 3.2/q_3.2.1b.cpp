@@ -13,30 +13,34 @@
 
 #include <cstdio>
 
+#define	N	10
+#define	S	15
+//#define	N	5
+//#define	S	11
+
 int
 main()
 {
-	int n(10);
-	int S(15);
-	const int a[] = {5, 1, 3, 5, 10, 7, 4, 9, 2, 8};
+	const int a[N] = {5, 1, 3, 5, 10, 7, 4, 9, 2, 8};
+//	const int a[N] = {1, 2, 3, 4, 5};
 
-//	int n(5);
-//	int S(11);
-//	const int a[] = {1, 2, 3, 4, 5};
+	int s(0);	// 部分列の先頭
+	int e(0);	// 部分列の末尾+1
+	int c(0);	// 部分列の要素の和
+	int l(N+1);	// 部分列の長さ (最小値)
 
-	int t(a[0]);
-	int s(0);
-	int e(1);
-	int h(n+1);
-
-	while (s < n) {
-		while (t < S && e < n) t += a[e++];
-		if (S <= t && e - s < h) h = e - s;
-		t -= a[s++];
+	while (s < N) {
+		if (e < N && c < S) {
+			c += a[e++];
+		}
+		else {
+			if (S <= c && e - s < l) l = e - s;
+			c -= a[s++];
+		}
 	}
 
-	if (h <= n) {
-		std::printf("Yes (%d)\n", h);
+	if (l <= N) {
+		std::printf("Yes (%d)\n", l);
 	}
 	else {
 		std::printf("No\n");
