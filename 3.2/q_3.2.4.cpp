@@ -18,18 +18,31 @@
  */
 
 #include <cstdio>
-#include <cstring>
+#include <algorithm>
 
 #define	M	4
 #define	N	4
 
+bool
+is_white(const bool b[M][N],
+		 int x[M][N],
+		 int i,
+		 int j)
+{
+	if (!b[i][j] && x[i][j] % 2 == 0) return true;	// 白
+	if (b[i][j] && x[i][j] % 2 == 1) return true;	// 白
+	return false;	// 黒
+}
+
 int
-calc(const int b[M][N],
+calc(const bool b[M][N],
 	 int x[M][N],
-	 int y[M][N],
+	 bool y[M][N],
 	 int h = 0,
 	 int k = 0)
 {
+	if (h < 0) return -1;	// 不正な入力
+
 	// 最終的な盤の状態のチェック (最終行だけ確認すれば十分)
 	if (M * N <= h) {
 		for (int j(0); j < N; ++j) {
@@ -46,8 +59,8 @@ calc(const int b[M][N],
 	// 作業領域の初期化
 	if (h == 0) {
 		for (int i(0); i < M; ++i) {
-			std::memset((void*)x[i], 0, sizeof(int) * N);
-			std::memset((void*)y[i], 0, sizeof(int) * N);
+			std::fill(x[i], x[i] + N, 0);
+			std::fill(y[i], y[i] + N, false);
 		}
 	}
 
@@ -55,30 +68,32 @@ calc(const int b[M][N],
 	int i = h / M;
 	int j = h % N;
 
-	// 上の行がないか上の行が既に白
-	if (i == 0 || (0 < i && ((b[i-1][j] == 0 && x[i-1][j] % 2 == 0) || (b[i-1][j] == 1 && x[i-1][j] % 2 == 1)))) {
+	// 上の行がないか上の行が既に白 => ひっくり返さず次のマスへ
+	if (i == 0 || is_white(b, x, i - 1, j)) {
 		r = calc(b, x, y, h + 1, k);
 		if (0 <= r) return r;
 	}
 
-	// 上の行がないか上の行がまだ黒 => ひっくり返して
-	if (i == 0 || (0 < i && ((b[i-1][j] == 0 && x[i-1][j] % 2 == 1) || (b[i-1][j] == 1 && x[i-1][j] % 2 == 0)))) {
+	// 上の行がないか上の行がまだ黒 => ひっくり返して次のマスへ
+	if (i == 0 || !is_white(b, x, i - 1, j)) {
+		// ひっくり返す
 		++x[i][j];
 		if (0 < i) ++x[i-1][j];
 		if (0 < j) ++x[i][j-1];
 		if (i+1 < M) ++x[i+1][j];
 		if (j+1 < N) ++x[i][j+1];
-		++y[i][j];
+		y[i][j] = true;
 
 		r = calc(b, x, y, h + 1, k + 1);
 		if (0 <= r) return r;
 
+		// 元に戻す
 		--x[i][j];
 		if (0 < i) --x[i-1][j];
 		if (0 < j) --x[i][j-1];
 		if (i+1 < M) --x[i+1][j];
 		if (j+1 < N) --x[i][j+1];
-		--y[i][j];
+		y[i][j] = false;
 	}
 
 	return -1;
@@ -87,13 +102,13 @@ calc(const int b[M][N],
 int
 main()
 {
-	int b[M][N] = {{1, 0, 0, 1},
-				   {0, 1, 1, 0},
-				   {0, 1, 1, 0},
-				   {1, 0, 0, 1}};
+	const bool b[M][N] = {{1, 0, 0, 1},
+						 {0, 1, 1, 0},
+						 {0, 1, 1, 0},
+						 {1, 0, 0, 1}};
 
-	int x[M][N];
-	int y[M][N];
+	int x[M][N];	// マス毎のひっくり返した回数
+	bool y[M][N];	// ひっくり返した中心のマスの状態
 
 	int r = calc(b, x, y);
 
@@ -102,7 +117,7 @@ main()
 	for (int i(0); i < M; ++i) {
 		for (int j(0); j < N; ++j) {
 			if (0 < j) std::printf(" ");
-			std::printf("%d", y[i][j]);
+			std::printf("%d", (int)y[i][j]);
 		}
 		std::printf("\n");
 	}
