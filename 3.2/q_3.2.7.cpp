@@ -20,7 +20,7 @@
 #include <utility>
 #include <algorithm>
 
-typedef std::pair<int, int> WV;
+typedef std::pair<int, int> WV;	// 重さと価値のペア
 
 void
 fill_wv(const int* w,
@@ -53,8 +53,9 @@ main()
 	std::vector<WV> wv1;
 	std::vector<WV> wv2;
 
-	fill_wv(w, v, wv1, m);				// O(2^m)
-	fill_wv(w + m, v + m, wv2, n - m);	// O(2^(n-m))
+	// 重さと価値のペアの組み合わせを前半・後半毎に全て列挙
+	fill_wv(w, v, wv1, m);				// 前半, O(2^m)
+	fill_wv(w + m, v + m, wv2, n - m);	// 後半, O(2^(n-m))
 
 	std::sort(wv2.begin(), wv2.end());	// O(2^(n-m) * (n-m))
 
@@ -82,7 +83,6 @@ main()
 			}
 		}
 		if (s < 0) continue;
-		if (k <= s) continue;
 		if (wv1[i].second + wv2[s].second <= m_v) continue;
 		m_v = wv1[i].second + wv2[s].second;
 	}
